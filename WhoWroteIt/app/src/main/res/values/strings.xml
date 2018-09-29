@@ -9,6 +9,7 @@
     <string name="ok_btn">OK</string>
     <string name="add_book">Add new book</string>
     <string name="search_btn">Search</string>
+    <string name="by">By -</string>
 
     <array name="img_arr">
         <item>@drawable/img_badminton</item>

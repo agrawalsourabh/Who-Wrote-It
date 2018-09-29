@@ -2,9 +2,13 @@ package com.example.sourabh.whowroteit;
 
 import android.content.res.TypedArray;
 import android.os.Bundle;
+import android.support.annotation.NonNull;
+import android.support.annotation.Nullable;
 import android.support.design.widget.FloatingActionButton;
 import android.support.design.widget.Snackbar;
 import android.support.v4.app.FragmentTransaction;
+import android.support.v4.app.LoaderManager;
+import android.support.v4.content.Loader;
 import android.support.v7.app.AlertDialog;
 import android.support.v7.app.AppCompatActivity;
 import android.support.v7.widget.GridLayoutManager;
@@ -44,7 +48,16 @@ public class MainActivity extends AppCompatActivity implements View.OnClickListe
         Toolbar toolbar = (Toolbar) findViewById(R.id.toolbar);
         setSupportActionBar(toolbar);
 
-        bookData = new LinkedList<>();
+        if(savedInstanceState != null){
+            Log.d(LOG_TAG, "Device rotated");
+            if(bookData != null){
+                Log.d(LOG_TAG, bookData.get(0).getBookAuthor());
+            }
+        }
+        else {
+
+            bookData = new LinkedList<>();
+        }
         Log.d(LOG_TAG, "on Create");
 
         progBar = findViewById(R.id.prog_bar);
@@ -68,6 +81,11 @@ public class MainActivity extends AppCompatActivity implements View.OnClickListe
 
     }
 
+    @Override
+    protected void onSaveInstanceState(Bundle outState) {
+        super.onSaveInstanceState(outState);
+       outState.putString("Bundle String", "ab");
+    }
 
     @Override
     protected void onStart() {
@@ -140,17 +158,19 @@ public class MainActivity extends AppCompatActivity implements View.OnClickListe
         else if(v == okDialogBtn){
             bookName = bookNameDialogText.getText().toString();
             Toast.makeText(MainActivity.this, "ok click", Toast.LENGTH_LONG).show();
+
             new FetchBook(MainActivity.this, progBar).execute(bookName);
             Log.d(LOG_TAG, "dialog dismiss");
             alertDialog.dismiss();
         }
     }
 
+
     public static void initializeList(Book book) {
         book.setBookImgRes(R.drawable.img_book);
         int size = bookData.size();
         String author = book.getBookAuthor().replace("[", "").replace("]", "");
-        book.setBookAuthor(author);
+        book.setBookAuthor("By - " + author);
         bookData.add(book);
         int index = bookData.indexOf(book);
         Log.d(LOG_TAG, "initial size: " + size);
