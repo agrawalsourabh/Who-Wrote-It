@@ -23,9 +23,9 @@ import java.util.ArrayList;
 import java.util.LinkedList;
 
 public class MainActivity extends AppCompatActivity implements View.OnClickListener {
-    RecyclerView recyclerView;
+    static RecyclerView recyclerView;
     MyAdapter myAdapter;
-    ArrayList<Book> bookData =  new ArrayList<>();;
+    public static LinkedList<Book> bookData;
     public final static String LOG_MSG = "msg";
     EditText bookNameDialogText;
     TextView okDialogBtn, cancelDialogBtn;
@@ -42,6 +42,9 @@ public class MainActivity extends AppCompatActivity implements View.OnClickListe
         Toolbar toolbar = (Toolbar) findViewById(R.id.toolbar);
         setSupportActionBar(toolbar);
 
+        bookData = new LinkedList<>();
+        Log.d(LOG_TAG, "on Create");
+
         FloatingActionButton fab = (FloatingActionButton) findViewById(R.id.fab);
         fab.setOnClickListener(new View.OnClickListener() {
             @Override
@@ -56,18 +59,12 @@ public class MainActivity extends AppCompatActivity implements View.OnClickListe
                 alertDialog.show();
             }
         });
-        initBookData();
+
         initRecyclerView();
 
+
     }
 
-    private void initBookData() {
-        Book book = new Book("My book", "Sourabh", 0);
-        bookData.add(book);
-
-        Book book2 = new Book("My book2", "SourabhAg", 0);
-        bookData.add(book2);
-    }
 
     @Override
     protected void onStart() {
@@ -147,19 +144,25 @@ public class MainActivity extends AppCompatActivity implements View.OnClickListe
         }
     }
 
-    public void initializeList(Book book) {
+    public static void initializeList(Book book) {
         int size = bookData.size();
         bookData.add(book);
-        Log.d(LOG_TAG, book.getBookAuthor());
-        Log.d(LOG_TAG, book.getBookTitle());
+        int index = bookData.indexOf(book);
+        Log.d(LOG_TAG, "initial size: " + size);
+        Log.d(LOG_TAG, "index: " + index);
+        Log.d(LOG_TAG, bookData.get(index).getBookTitle());
+        Log.d(LOG_TAG, bookData.get(index).getBookAuthor());
+        Log.d(LOG_TAG, "after adding new book: " + bookData.size());
+//        Log.d(LOG_TAG, book.getBookAuthor());
+//        Log.d(LOG_TAG, book.getBookTitle());
 
-        if(recyclerView.getAdapter() == null){
-            Toast.makeText(this, "null hai", Toast.LENGTH_LONG).show();
-        }
-//        recyclerView.getAdapter().notifyItemInserted(size);
-//        recyclerView.smoothScrollToPosition(size);
-
-        Toast.makeText(this, "size: " + bookData.size(), Toast.LENGTH_LONG).show();
+//        if(recyclerView.getAdapter() == null){
+//            Toast.makeText(this, "null hai", Toast.LENGTH_LONG).show();
+//        }
+        recyclerView.getAdapter().notifyItemInserted(size);
+        recyclerView.smoothScrollToPosition(size);
+//
+//        Toast.makeText(this, "size: " + bookData.size(), Toast.LENGTH_LONG).show();
     }
 
     private void notifyRecyclerView() {

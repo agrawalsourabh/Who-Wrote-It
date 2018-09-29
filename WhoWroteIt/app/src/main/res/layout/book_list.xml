@@ -22,7 +22,7 @@
         android:layout_weight="1"
         android:id="@+id/book_name"
         android:padding="16dp"
-        android:textAppearance="@style/TextAppearance.MaterialComponents.Headline1"/>
+        android:textAppearance="@style/TextAppearance.MaterialComponents.Headline6"/>
 
     <TextView
         android:id="@+id/author_name"

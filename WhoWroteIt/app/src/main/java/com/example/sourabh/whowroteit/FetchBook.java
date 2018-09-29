@@ -51,9 +51,8 @@ public class FetchBook extends AsyncTask<String, Void, String> {
         }
 
         if(title != null && authors != null) {
-            Book book = new Book(title, "", 0);
-            MainActivity ourActivity = new MainActivity();
-            ourActivity.initializeList(book);
+            Book book = new Book(title, authors, 0);
+            MainActivity.initializeList(book);
         }
     }
 

@@ -15,7 +15,7 @@ import java.util.ArrayList;
 import java.util.LinkedList;
 
 public class MyAdapter extends RecyclerView.Adapter<MyAdapter.MyViewHolder>{
-    private ArrayList<Book> bookData;
+    private LinkedList<Book> bookData;
     private LayoutInflater inflater;
     Context context;
 
@@ -44,7 +44,7 @@ public class MyAdapter extends RecyclerView.Adapter<MyAdapter.MyViewHolder>{
         return bookData.size();
     }
 
-    public void setBookData(ArrayList<Book> bookData) {
+    public void setBookData(LinkedList<Book> bookData) {
         this.bookData  = bookData;
     }
 
