@@ -3,6 +3,8 @@ package com.example.sourabh.whowroteit;
 import android.content.Context;
 import android.os.AsyncTask;
 import android.util.Log;
+import android.view.View;
+import android.widget.ProgressBar;
 import android.widget.Toast;
 
 import org.json.JSONArray;
@@ -13,19 +15,22 @@ import java.io.IOException;
 
 public class FetchBook extends AsyncTask<String, Void, String> {
     Context context;
+    ProgressBar progressBar;
 
-
-    FetchBook(Context context){
+    FetchBook(Context context, ProgressBar progressBar){
         this.context = context;
+        this.progressBar = progressBar;
     }
     @Override
     protected void onPreExecute() {
         super.onPreExecute();
+        progressBar.setVisibility(View.VISIBLE);
     }
 
     @Override
     protected void onPostExecute(String s) {
         super.onPostExecute(s);
+        progressBar.setVisibility(View.GONE);
         int i=0;
         String title = null;
         String authors = null;

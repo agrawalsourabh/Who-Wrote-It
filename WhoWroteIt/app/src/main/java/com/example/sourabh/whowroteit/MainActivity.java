@@ -16,6 +16,7 @@ import android.view.Menu;
 import android.view.MenuItem;
 import android.widget.Button;
 import android.widget.EditText;
+import android.widget.ProgressBar;
 import android.widget.TextView;
 import android.widget.Toast;
 
@@ -31,6 +32,7 @@ public class MainActivity extends AppCompatActivity implements View.OnClickListe
     TextView okDialogBtn, cancelDialogBtn;
     String bookName;
     TypedArray imgArray;
+    ProgressBar progBar;
     AlertDialog alertDialog;
 
     private final static String LOG_TAG = "fragment_msg";
@@ -45,6 +47,7 @@ public class MainActivity extends AppCompatActivity implements View.OnClickListe
         bookData = new LinkedList<>();
         Log.d(LOG_TAG, "on Create");
 
+        progBar = findViewById(R.id.prog_bar);
         FloatingActionButton fab = (FloatingActionButton) findViewById(R.id.fab);
         fab.setOnClickListener(new View.OnClickListener() {
             @Override
@@ -88,7 +91,6 @@ public class MainActivity extends AppCompatActivity implements View.OnClickListe
         bookNameDialogText = myDialogView.findViewById(R.id.bookname_txt);
         cancelDialogBtn = myDialogView.findViewById(R.id.cancel_btn);
         okDialogBtn = myDialogView.findViewById(R.id.ok_btn);
-
         cancelDialogBtn.setOnClickListener(MainActivity.this);
         okDialogBtn.setOnClickListener(MainActivity.this);
     }
@@ -138,14 +140,17 @@ public class MainActivity extends AppCompatActivity implements View.OnClickListe
         else if(v == okDialogBtn){
             bookName = bookNameDialogText.getText().toString();
             Toast.makeText(MainActivity.this, "ok click", Toast.LENGTH_LONG).show();
-            new FetchBook(MainActivity.this).execute(bookName);
+            new FetchBook(MainActivity.this, progBar).execute(bookName);
             Log.d(LOG_TAG, "dialog dismiss");
             alertDialog.dismiss();
         }
     }
 
     public static void initializeList(Book book) {
+        book.setBookImgRes(R.drawable.img_book);
         int size = bookData.size();
+        String author = book.getBookAuthor().replace("[", "").replace("]", "");
+        book.setBookAuthor(author);
         bookData.add(book);
         int index = bookData.indexOf(book);
         Log.d(LOG_TAG, "initial size: " + size);
@@ -153,22 +158,12 @@ public class MainActivity extends AppCompatActivity implements View.OnClickListe
         Log.d(LOG_TAG, bookData.get(index).getBookTitle());
         Log.d(LOG_TAG, bookData.get(index).getBookAuthor());
         Log.d(LOG_TAG, "after adding new book: " + bookData.size());
-//        Log.d(LOG_TAG, book.getBookAuthor());
-//        Log.d(LOG_TAG, book.getBookTitle());
 
-//        if(recyclerView.getAdapter() == null){
-//            Toast.makeText(this, "null hai", Toast.LENGTH_LONG).show();
-//        }
         recyclerView.getAdapter().notifyItemInserted(size);
         recyclerView.smoothScrollToPosition(size);
 //
 //        Toast.makeText(this, "size: " + bookData.size(), Toast.LENGTH_LONG).show();
     }
 
-    private void notifyRecyclerView() {
-        if(bookData != null) {
-            myAdapter.notifyDataSetChanged();
-        }
-//        myAdapter.notifyDataSetChanged();
-    }
+
 }
